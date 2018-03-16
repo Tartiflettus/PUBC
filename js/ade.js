@@ -76,6 +76,7 @@ function getProf(date, heure) {
 				console.log(element[6]+"");
 			}
         }
+		
     });
 	
 }
