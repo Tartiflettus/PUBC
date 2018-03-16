@@ -78,7 +78,6 @@ function getProf(date, heure) {
         }
 		
     });
-	
 }
 
 
