@@ -5,7 +5,7 @@ var parsed = Papa.parse(csv);
 var groupe = "G1";
 
 var date = "14/03/18";
-var formation = "TELECOM 1A";
+var formation = "Master Informatique";
 
 
 function getSysDate() {
@@ -67,10 +67,23 @@ function getGroupe(groupe) { // emploi du temps du groupe
     });
 }
 
-
+function getProf(date, heure) {
+	 parsed.data.forEach(function (element) {
+        if (element[1] == date && element[0] == formation && element[3] == heure) {
+			if (element[6] == "SIMON Gilles"){
+				console.log("Gillou");
+			} else {
+				console.log(element[6]+"");
+			}
+        }
+    });
+	
+}
 
 
 
 //edtJour(formation, date);
 //console.log(getSysHeure());
-getGroupe(groupe);
+//getGroupe(groupe);
+
+getProf("19/03/2018",  "10:15");
