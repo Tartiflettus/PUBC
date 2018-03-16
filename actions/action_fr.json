@@ -1,0 +1,32 @@
+{
+    "locale": "fr",
+    "actions": [
+    {
+      "description": "Watson France",
+      "name": "MAIN",
+      "fulfillment": {
+        "conversationName": "Watson"
+      },
+      "intent": {
+        "name": "actions.intent.MAIN",
+        "trigger": {
+          "queryPatterns": [
+            "Dis à Watson",
+            "Demande à Watson"
+          ]
+        }
+      }
+    }
+  ],
+  "conversations": {
+    "Watson": {
+      "name": "Watson",
+      "url": "https://6737231c.ngrok.io/api/google4IBM",
+      "in_dialog_intents": [
+        {
+          "name": "actions.intent.CANCEL"
+        }
+      ]
+    }
+  }
+}
