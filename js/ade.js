@@ -67,10 +67,52 @@ function getGroupe(groupe) { // emploi du temps du groupe
     });
 }
 
+function prochainCours() { // prochaine matière
+    dateMin = "35/35/35";
+    heureMin = "25:65";
+    cours = null;
+    
+    parsed.data.forEach(function (element) {
+        if(element[0]==formation && element[4].indexOf(groupe)!=-1 && element[1]>=getSysDate() && element[1]<=dateMin){
+            dateMin = element[1];
+            if(element[3]<heureMin){
+                heureMin=element[3];
+                cours=element[4];
+            }
+        }
+    });
 
+    console.log(cours + " " + heureMin + " " + dateMin);
+}
 
+function coursADate(date, heure){ // matière à telle date et telle heure
+    cours=null;
+    parsed.data.forEach(function (element) {
+        if(element[0]==formation && element[4].indexOf(groupe)!=-1 && element[1]==date && element[3]==heure){
+            console.log(element[4]);
+        }
+    });
+    if(cours==null){
+        console.log("Pas cours à ces dates!");
+    }
+}
 
+function matiereActu() { // matière actuelle sinon rien 
+    cours = null;
+    parsed.data.forEach(function (element) {
+        if(element[0]==formation && element[4].indexOf(groupe)!=-1 && element[1]==getSysDate() && element[3]==getSysHeure()){
+           console.log(element[4]);
+           cours = element[4];
+        }
+    });
+    if(cours==null){
+        console.log("Pas cours actuellement!");
+    }
+}
 
 //edtJour(formation, date);
 //console.log(getSysHeure());
-getGroupe(groupe);
+//getGroupe(groupe);
+//prochainCours();
+//coursADate("19/03/2018", "08:00");
+//matiereActu();
