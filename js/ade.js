@@ -81,8 +81,24 @@ function prochainCours() { // prochaine matière
             }
         }
     });
+    if(cours==null){
+        console.log("Pas de cours prévu...");
+    }else{
+        console.log(cours + " " + heureMin + " " + dateMin);
+    }
+}
 
-    console.log(cours + " " + heureMin + " " + dateMin);
+function getProf(date, heure) {
+	 parsed.data.forEach(function (element) {
+        if (element[1] == date && element[0] == formation && element[3] == heure) {
+			if (element[6] == "SIMON Gilles"){
+				console.log("Gillou");
+			} else {
+				console.log(element[6]+"");
+			}
+        }
+    });
+	
 }
 
 function coursADate(date, heure){ // matière à telle date et telle heure
@@ -113,6 +129,8 @@ function matiereActu() { // matière actuelle sinon rien
 //edtJour(formation, date);
 //console.log(getSysHeure());
 //getGroupe(groupe);
-//prochainCours();
+prochainCours();
 //coursADate("19/03/2018", "08:00");
 //matiereActu();
+
+//getProf("19/03/2018",  "10:15");
