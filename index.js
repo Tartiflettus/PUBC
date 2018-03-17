@@ -124,9 +124,11 @@ function getSessionContext(sessionId) {
 
 function sendResponse(response, resolve) {
 
-		response = traiterCoursMaintenant(response);
+		//response = traiterCoursMaintenant(response);
 		response = traiterGetProfMaintenant(response);
 		response = traiterCoursDate(response);
+
+		response.context.action = null;
 		console.log(response);
 	
 	  // Combine the output messages into one message.
@@ -215,9 +217,9 @@ function traiterCoursMaintenant(response){
 
 
 function traiterGetProfMaintenant(response){
-	const intent = response.intents[0].intent;
-	console.log("intent : " + intent);
-	if (intent === 'prof_cours_maintenant'){
+	//const intent = reponse.intents[0].intent;
+	//console.log("intent : " + intent);
+	if (response.context.action === 'prof_cours_maintenant' && response.context.context_formation != undefined){
 		var arr = ade.getProf(ade.getSysDate, ade.getSysHeure);
 		if(arr.length > 0){
 			var res = "Actuellement tu as cours avec ";
@@ -238,10 +240,10 @@ function traiterGetProfMaintenant(response){
 
 
 function traiterCoursDate(response){
-	const intent = response.intents[0].intent;
-	console.log("intent : " + intent);
-	if (intent === 'cours_date' && response.context.context_formation != undefined){
-		const date = new Date(response.entities[0].value);
+	//const intent = response.intents[0].intent;
+	//console.log("intent : " + intent);
+	if (response.context.action === 'cours_date' && response.context.context_formation != undefined && response.context.date != undefined){
+		const date = new Date(response.context.date);
 		const dateF = date.getDate()+"/"+ade.convertMonth(date.getMonth()+1)+"/"+date.getFullYear();
 		console.log("date : " + date);
 		console.log("dateF : " + dateF);
@@ -253,8 +255,6 @@ function traiterCoursDate(response){
 				res += arr[i].intitule + " à " + arr[i].hdebut + " en " + arr[i].lieu + ", ";
 			}
 			response.output.text[0] = res;
-		}else{
-			response.output.text[0] = "Vous n'avez aucun cour";
 		}
 	}
 
