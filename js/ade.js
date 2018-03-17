@@ -2,13 +2,6 @@ var Papa = require('./papaparse.min');
 var fs = require('fs');
 var csv = fs.readFileSync(__dirname + '/ADE-extract.csv', 'utf8');
 var parsed = Papa.parse(csv);
-var groupe = "G1";
-
-var date = "14/03/18";
-var formation = "Master Informatique";
-
-
-
 
 
 module.exports = {
@@ -81,68 +74,64 @@ module.exports = {
         console.log("La formation selectionnée est " + formation);
     },
     
-    examen : function(formation) { // prochains examens de la formation
-        parsed.data.sort(sortDuree);
+	
+	    prochainExamen : function(formation) { // prochaine exam
+		return this.prochainCours(formation, "Examen");
+    },
+    
+    
+    edtGroupe : function(formation, groupe, date) { // emploi du temps du groupe
+	 var arr = new Array;
+	var reg1 = new RegExp(groupe);
+	var reg2 = new RegExp("G[0-9]");
+        parsed.data.sort(this.sortDuree);
         parsed.data.forEach(function (element) {
-            if (element[1] >= getSysDate() && element[0] == formation && element[4].indexOf("Examen") != -1) {
+            if (element[1] == date && element[0] == formation) {
+				if(element[4].match(reg1) || !element[4].match(reg2)) {
                 console.log(element[3] + " " + element[4] + " " + element[5]);
-                return {
+                arr.push({
                     "intitule" : element[4],
                     "hdebut" : element[3],
                     "lieu" : element[5]
-                };
+                });
+				}
             }
-        });
-    },
-    
-    
-    getGroupe : function(groupe) { // emploi du temps du groupe
-        parsed.data.sort(sortDuree);
-        var reg = new RegExp(groupe+"|(^(?!G\d).$)");
-        parsed.data.forEach(function (element) {
-            if (element[1] >= getSysDate() && element[0] == formation && element[4].match(reg)) {
-                console.log(element[3] + " " + element[4] + " " + element[5]);
-    
-            }
-        });
-    },
-    
-    prochainCours : function() { // prochaine matière
-        dateMin = "35/35/35";
-        heureMin = "25:65";
-        cours = null;
-        
-        parsed.data.forEach(function (element) {
-            if(element[0]==formation && element[4].indexOf(groupe)!=-1 && element[1]>=getSysDate() && element[1]<=dateMin){
-                dateMin = element[1];
-                if(element[3]<heureMin){
-                    heureMin=element[3];
-                    cours=element[4];
-                }
-            }
-        });
-        if(cours==null){
-            console.log("Pas de cours prévu...");
-        }else{
-            console.log(cours + " " + heureMin + " " + dateMin);
-        }
-    },
-    
-    getProf : function(date, heure) {
-        var arr = new Array;
-         parsed.data.forEach(function (element) {
-            if (element[1] == date && element[0] == formation && element[3] == heure) {
-                if (element[6] == "SIMON Gilles"){
-                    console.log("Gillou");
-                    arr.push("Gillou");
-                } else {
-                    console.log(element[6]+"");
-                    arr.push(element[6]);
-                }
-            }
-            
         });
         return arr;
+    },
+    
+    prochainCours : function(formation, cours) { // prochaine matière
+		var arr = new Array;
+        parsed.data.sort(this.sortDate);
+        parsed.data.some(function (element) {
+            if(element[0]==formation && element[1]>= module.exports.getSysDate() && element[4].indexOf(cours) != -1 ){
+				//console.log(element[3] + " " + element[4] + " " + element[5]);
+					arr.push({
+                    "intitule" : element[4],
+                    "hdebut" : element[3],
+                    "lieu" : element[5]
+                });
+						return true;
+                }
+        });
+		return arr;
+    },
+    
+    prochainProf : function(formation, prof) {
+        var arr = new Array;
+        parsed.data.sort(this.sortDate);
+        parsed.data.some(function (element) {
+            if(element[0]==formation && element[1]>= module.exports.getSysDate() && element[6].indexOf(prof) != -1 ){
+				//console.log(element[3] + " " + element[4] + " " + element[5]);
+					arr.push({
+                    "intitule" : element[4],
+                    "hdebut" : element[3],
+                    "lieu" : element[5]
+                });
+						return true;
+                }
+        });
+		return arr;
     },
     
     coursADate : function(date, heure){ // matière à telle date et telle heure
@@ -194,9 +183,11 @@ module.exports = {
 
 
 
-
-
-
+var cours = "TD G1 Genie logiciel";
+var formation = "Master Informatique";
+//var tab = module.exports.edtGroupe(formation, "G1", "20/03/2018");
+var tab = module.exports.prochainProf(formation, "SIMON");
+console.log(tab);
 //edtJour(formation, date);
 //console.log(getSysHeure());
 //getGroupe(groupe);
