@@ -1,5 +1,7 @@
 'use strict';
 
+var ade = require('./js/ade');
+
 const ConversationV1 = require('watson-developer-cloud/conversation/v1');
 const redis = require('redis');
 
@@ -183,6 +185,12 @@ app.post('/api/google4IBM', function(args, res) {
 	res.setHeader('Content-Type', 'application/json')
 	res.append("Google-Assistant-API-Version", "v2")
 */
+
+
+function traiterDateProchaineMatiere(response){
+
+	return response;
+}
 
 
 // start the server
