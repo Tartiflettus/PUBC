@@ -34,13 +34,19 @@ module.exports = {
     },
     
     edtJour : function(formation, date) { // 
-        parsed.data.sort(sortDuree);
+        var arr = new Array;
+        parsed.data.sort(this.sortDuree);
         parsed.data.forEach(function (element) {
             if (element[1] == date && element[0] == formation) {
                 console.log(element[3] + " " + element[4] + " " + element[5]);
-    
+                arr.push({
+                    "intitule" : element[4],
+                    "hdebut" : element[3],
+                    "lieu" : element[5]
+                });
             }
         });
+        return arr;
     },
     
     edtSemaine : function(date) { //TODO

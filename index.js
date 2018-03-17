@@ -66,7 +66,7 @@ function conversationMessage(request, workspaceId) {
 			context: context
 			//context: {}
 		  };
-	  console.log("Input" + JSON.stringify(test,null,2));
+	  //console.log("Input" + JSON.stringify(test,null,2));
 	  conversation.message(
 		{
 		  input: { text: input },
@@ -78,7 +78,7 @@ function conversationMessage(request, workspaceId) {
 			console.error(err);
 			reject('Error talking to Watson.');
 		  } else {
-			console.log(watsonResponse);
+			//console.log(watsonResponse);
 			context = watsonResponse.context; // Update global context			
 			resolve(watsonResponse);
 		  }
@@ -88,7 +88,7 @@ function conversationMessage(request, workspaceId) {
   }
 
 function getSessionContext(sessionId) {
-	console.log('sessionId: ' + sessionId); 
+	//console.log('sessionId: ' + sessionId); 
 	return new Promise(function(resolve, reject) {
 	  redisClient.get(sessionId, function(err, value) {
 		if (err) {
@@ -97,32 +97,35 @@ function getSessionContext(sessionId) {
 		}
 		// set global context
 		context = value ? JSON.parse(value) : {};
-		console.log('---------');
-		console.log('Context Recupéré:');
-		console.log(context);
-		console.log('---------');
+		//console.log('---------');
+		//console.log('Context Recupéré:');
+		//console.log(context);
+		//console.log('---------');
 		resolve();
 	  });
 	});
   }
   
   function saveSessionContext(sessionId) {
-		console.log('---------');
-		console.log('Begin saveSessionContext ' + sessionId);
+		//console.log('---------');
+		//console.log('Begin saveSessionContext ' + sessionId);
   
 	// Save the context in Redis. Can do this after resolve(response).
 	if (context) {
 	  const newContextString = JSON.stringify(context);
 	  // Saved context will expire in 600 secs.
 	  redisClient.set(sessionId, newContextString, 'EX', 600);
-	  console.log('Saved context in Redis');
-	  console.log(sessionId);
-		console.log(newContextString);
-		console.log('---------');
+	  //console.log('Saved context in Redis');
+	  //console.log(sessionId);
+		//console.log(newContextString);
+		//console.log('---------');
 	}
   }
 
 function sendResponse(response, resolve) {
+
+		response = traiterCoursMaintenant(response);
+		console.log(response);
 	
 	  // Combine the output messages into one message.
 	  const output = response.output.text.join(' ');
@@ -161,8 +164,8 @@ function sendResponse(response, resolve) {
 app.post('/api/google4IBM', function(args, res) {
 	return new Promise(function(resolve, reject) {
 	  const request = args.body;
-	  console.log("Google Home is calling");
-	  console.log(JSON.stringify(request,null,2));
+	  //console.log("Google Home is calling");
+	  //console.log(JSON.stringify(request,null,2));
 	  const sessionId = args.body.conversation.conversationId;
 	  initClients()
 	  .then(() => getSessionContext(sessionId))
@@ -187,7 +190,19 @@ app.post('/api/google4IBM', function(args, res) {
 */
 
 
-function traiterDateProchaineMatiere(response){
+function traiterCoursMaintenant(response){
+	const intent = response.intents[0].intent;
+	console.log("intent : " + intent);
+	if(intent === 'cours_maintenant'){
+		var arr = ade.edtJour("Master Informatique", "15/03/2018");
+		if(arr.length > 0){
+			var res = "";
+			for(var i=0; i < arr.length; i++){
+				res += arr[i].intitule + " à " + arr[i].hdebut + " en salle " + arr[i].lieu + ", ";
+			}
+			response.output.text[0] = res;
+		}
+	}
 
 	return response;
 }
