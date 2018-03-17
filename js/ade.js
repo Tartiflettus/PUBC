@@ -95,6 +95,7 @@ module.exports = {
         return arr;
     },
     
+
     prochainExamen : function(formation) { // prochaine matière
 		var res;
         parsed.data.sort(this.sortDuree);
@@ -107,7 +108,25 @@ module.exports = {
                     "hdebut" : element[3],
                     "lieu" : element[5]
 					};
-						return true;
+					return true;
+			}
+		});
+		return res;
+	}
+
+
+    prochainCours : function(formation) { // prochaine matière
+        var res = null;
+        parsed.data.sort(this.sortDuree);
+        parsed.data.some(function (element) {
+            if(element[0]==formation && element[1] == module.exports.getSysDate() && element[3] >= module.exports.getSysHeure()){
+				console.log(element[3] + " " + element[4] + " " + element[5]);
+                    res = {"intitule" : element[4],
+                    "hdebut" : element[3],
+                    "date" : element[1],
+                    "lieu" : element[5],
+                    "enseignant" : String(element[6]).toLowerCase()}
+					return true;
                 }
         });
 		return res;
@@ -129,6 +148,9 @@ module.exports = {
         });
 		return arr;
     },
+
+
+
     
     coursADate : function(date, heure){ // matière à telle date et telle heure
         cours=null;
@@ -179,11 +201,16 @@ module.exports = {
 
 
 
-var cours = "TD G1 Genie logiciel";
+////var cours = "TD G1 Genie logiciel";
 var formation = "Master Informatique";
 //var tab = module.exports.edtGroupe(formation, "G1", "20/03/2018");
+<<<<<<< HEAD
 var tab = module.exports.prochainExamen(formation);
 console.log(tab);
+=======
+var tab = module.exports.prochainProf(formation, "SIMON");
+//console.log(tab);
+>>>>>>> 675d43bcf6b03c34468fce284ad980a6b1e0434d
 //edtJour(formation, date);
 //console.log(module.exports.getSysHeure());
 //getGroupe(groupe);
@@ -194,4 +221,7 @@ console.log(tab);
 
 //changerFormation("M1 Info");
 //getProf("19/03/2018",  "10:15");
+
+var res = module.exports.prochainCours(formation);
+console.log(res);
 

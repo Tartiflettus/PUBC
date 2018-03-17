@@ -19,7 +19,7 @@
   "conversations": {
     "Watson": {
       "name": "Watson",
-      "url": "https://b09ffa58.ngrok.io/api/google4IBM",
+      "url": "https://fdf673fb.ngrok.io/api/google4IBM",
       "in_dialog_intents": [
         {
           "name": "actions.intent.CANCEL"
