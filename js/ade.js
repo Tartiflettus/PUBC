@@ -74,30 +74,27 @@ module.exports = {
         console.log("La formation selectionnée est " + formation);
     },
     
-    examen : function(formation) { // prochains examens de la formation
-        parsed.data.sort(sortDuree);
-        parsed.data.forEach(function (element) {
-            if (element[1] >= getSysDate() && element[0] == formation && element[4].indexOf("Examen") != -1) {
-                console.log(element[3] + " " + element[4] + " " + element[5]);
-                return {
-                    "intitule" : element[4],
-                    "hdebut" : element[3],
-                    "lieu" : element[5]
-                };
-            }
-        });
+	
+	    prochainExamen : function(formation) { // prochaine exam
+		return this.prochainCours(formation, "Examen");
     },
     
     
-    getGroupe : function(groupe) { // emploi du temps du groupe
-        parsed.data.sort(sortDuree);
-        var reg = new RegExp(groupe+"|(^(?!G\d).$)");
+    edtGroupe : function(formation, groupe, date) { // emploi du temps du groupe
+	 var arr = new Array;
+	 var reg = new RegExp(groupe+"|(^(?!G\d).*$)");
+        parsed.data.sort(this.sortDuree);
         parsed.data.forEach(function (element) {
-            if (element[1] >= getSysDate() && element[0] == formation && element[4].match(reg)) {
+            if (element[1] == date && element[0] == formation && element[4].match(reg)) {
                 console.log(element[3] + " " + element[4] + " " + element[5]);
-    
+                arr.push({
+                    "intitule" : element[4],
+                    "hdebut" : element[3],
+                    "lieu" : element[5]
+                });
             }
         });
+        return arr;
     },
     
     prochainCours : function(formation, cours) { // prochaine matière
@@ -182,10 +179,10 @@ module.exports = {
 };
 
 
-/*
-var cours = "TD G1 Genie logiciel";
+
+/*var cours = "TD G1 Genie logiciel";
 var formation = "M1 MIAGE";
-var tab = module.exports.prochainCours(formation, cours);
+var tab = module.exports.edtGroupe(formation, "G1", "20/03/2018");
 console.log(tab);*/
 //edtJour(formation, date);
 //console.log(getSysHeure());
