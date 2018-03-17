@@ -5,7 +5,7 @@ var parsed = Papa.parse(csv);
 var groupe = "G1";
 
 var date = "14/03/18";
-var formation = "TELECOM 1A";
+var formation = "Master Informatique";
 
 
 function getSysDate() {
@@ -41,8 +41,19 @@ function edtJour(formation, date) { //
     });
 }
 
-function edtSemaine() {
+function edtSemaine(date) { //TODO
+	parsed.data.sort(sortDuree);
+    parsed.data.forEach(function (element) {
+		if (element[1] == date && element[0] == formation) {
+			
+		}
+	});
+}
 
+
+function changerFormation(form){
+	formation = form;
+	console.log("La formation selectionnée est " + formation);
 }
 
 function examen(formation) { // prochains examens de la formation
@@ -126,11 +137,34 @@ function matiereActu() { // matière actuelle sinon rien
     }
 }
 
+
+function coursImportant(date, heure){ //marche moyen bien
+	parsed.data.forEach(function (element) {
+		if(element[1] == date && element[3] == heure){
+			if( (formation == "Master Informatique" && element[6] == "DROUET Jean-Michel") || 
+			(formation == " TELECOM 1A" && element[6] == "VRIGNAUD Katharina")){
+				console.log("Le cours du " + date + " à " + heure + " n'est pas important, tu n'es pas obligé d'y aller");
+			} else {
+				console.log("Le cours du " + date + " à " + heure + "est important, va en cours");
+			}
+		}
+		
+	});
+	
+}
+
+
+
+
+
+
 //edtJour(formation, date);
 //console.log(getSysHeure());
 //getGroupe(groupe);
-prochainCours();
+//prochainCours();
 //coursADate("19/03/2018", "08:00");
 //matiereActu();
+coursImportant("23/03/2018", "08:00");
 
+//changerFormation("M1 Info");
 //getProf("19/03/2018",  "10:15");
