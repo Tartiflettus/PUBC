@@ -211,22 +211,22 @@ function traiterCoursMaintenant(response){
 
 function traiterGetProfMaintenant(reponse){
 	const intent = reponse.intents[0].intent;
-	if (intent == 'prof_cours_maintenant'){
-		var arr = ade.getProf(ade.getSysDate, ade.getSysHeure);
+	if (intent === 'prof_cours_maintenant'){
+		if(arr.length > 0){
+			var arr = ade.getProf(ade.getSysDate, ade.getSysHeure);
+			var res = "Actuellement tu as cours avec ";
+			for(var i=0; i < arr.length; i++){
+				res += arr[i] + ", ";
+			}
+			response.output.text[0] = res;
+		}
+		
 	}
-	response.output.text[0] = "Actuellement tu as cours avec " + ade.getProf(date, heure));
 	
 	return reponse;
 	
 }
 
-
-fonction traiterGetProf(reponse){
-	
-	
-	
-	
-}
 
 
 

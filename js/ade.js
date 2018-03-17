@@ -108,12 +108,15 @@ module.exports = {
     },
     
     getProf : function(date, heure) {
+        var arr = new Array;
          parsed.data.forEach(function (element) {
             if (element[1] == date && element[0] == formation && element[3] == heure) {
                 if (element[6] == "SIMON Gilles"){
                     console.log("Gillou");
+                    arr.push("Gillou");
                 } else {
                     console.log(element[6]+"");
+                    arr.push(element[6]);
                 }
             }
             
