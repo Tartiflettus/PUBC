@@ -74,11 +74,6 @@ module.exports = {
         console.log("La formation selectionnée est " + formation);
     },
     
-	
-	    prochainExamen : function(formation) { // prochaine exam
-		return this.prochainCours(formation, "Examen");
-    },
-    
     
     edtGroupe : function(formation, groupe, date) { // emploi du temps du groupe
 	 var arr = new Array;
