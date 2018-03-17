@@ -112,7 +112,7 @@ module.exports = {
 			}
 		});
 		return res;
-	}
+	},
 
 
     prochainCours : function(formation) { // prochaine matière
@@ -204,13 +204,9 @@ module.exports = {
 ////var cours = "TD G1 Genie logiciel";
 var formation = "Master Informatique";
 //var tab = module.exports.edtGroupe(formation, "G1", "20/03/2018");
-<<<<<<< HEAD
 var tab = module.exports.prochainExamen(formation);
 console.log(tab);
-=======
-var tab = module.exports.prochainProf(formation, "SIMON");
-//console.log(tab);
->>>>>>> 675d43bcf6b03c34468fce284ad980a6b1e0434d
+
 //edtJour(formation, date);
 //console.log(module.exports.getSysHeure());
 //getGroupe(groupe);
