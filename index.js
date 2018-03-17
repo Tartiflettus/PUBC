@@ -125,6 +125,8 @@ function getSessionContext(sessionId) {
 function sendResponse(response, resolve) {
 
 		response = traiterCoursMaintenant(response);
+		response = traiterGetProfMaintenant(response);
+		response = traiterCoursDate(response);
 		console.log(response);
 	
 	  // Combine the output messages into one message.
@@ -211,9 +213,10 @@ function traiterCoursMaintenant(response){
 
 function traiterGetProfMaintenant(reponse){
 	const intent = reponse.intents[0].intent;
+	console.log("intent : " + intent);
 	if (intent === 'prof_cours_maintenant'){
+		var arr = ade.getProf(ade.getSysDate, ade.getSysHeure);
 		if(arr.length > 0){
-			var arr = ade.getProf(ade.getSysDate, ade.getSysHeure);
 			var res = "Actuellement tu as cours avec ";
 			for(var i=0; i < arr.length; i++){
 				res += arr[i] + ", ";
@@ -225,6 +228,30 @@ function traiterGetProfMaintenant(reponse){
 	
 	return reponse;
 	
+}
+
+
+
+function traiterCoursDate(response){
+	const intent = response.intents[0].intent;
+	console.log("intent : " + intent);
+	if (intent === 'cours_date'){
+		const date = new Date(response.entities[0].value);
+		const dateF = date.getDate()+"/"+ade.convertMonth(date.getMonth()+1)+"/"+date.getFullYear();
+		console.log("date : " + date);
+		console.log("dateF : " + dateF);
+		var arr = ade.edtJour("Master Informatique", dateF);
+		console.log('array : ' + arr);
+		if(arr.length > 0){
+			var res = "Vous aurez cours de ";
+			for(var i=0; i < arr.length; i++){
+				res += arr[i].intitule + " à " + arr[i].hdebut + " en " + arr[i].lieu + ", ";
+			}
+			response.output.text[0] = res;
+		}
+	}
+
+	return response;
 }
 
 

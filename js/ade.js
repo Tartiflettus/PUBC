@@ -9,12 +9,19 @@ var formation = "Master Informatique";
 
 
 
+
+
 module.exports = {
+
+    convertMonth : function(month){
+        return month < 10 ? '0' + month : month;
+    },
+
     getSysDate : function() {
         d = new Date();
         jj = d.getDate();
         mm = d.getMonth() + 1;
-        yy = d.getFullYear().toString().substr(-2);
+        yy = d.getFullYear();//.toString().substr(-2);
         return jj + "/" + mm + "/" + yy;
     },
     
@@ -125,9 +132,14 @@ module.exports = {
     
     coursADate : function(date, heure){ // matière à telle date et telle heure
         cours=null;
+        var arr = new Array;
         parsed.data.forEach(function (element) {
             if(element[0]==formation && element[4].indexOf(groupe)!=-1 && element[1]==date && element[3]==heure){
                 console.log(element[4]);
+                arr.push({
+                    "intitule" : element[4],
+                    "lieu" : element[5]
+                });
             }
         });
         if(cours==null){
