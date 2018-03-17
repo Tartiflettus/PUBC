@@ -192,17 +192,20 @@ app.post('/api/google4IBM', function(args, res) {
 */
 
 
+
 function traiterCoursMaintenant(response){
 	const intent = response.intents[0].intent;
 	console.log("intent : " + intent);
-	if(intent === 'cours_maintenant'){
-		var arr = ade.edtJour("Master Informatique", "15/03/2018");
+	if(intent === 'cours_maintenant' && response.context.context_formation != undefined){
+		var arr = ade.edtJour(response.context.context_formation, ade.getSysDate());
 		if(arr.length > 0){
 			var res = "";
 			for(var i=0; i < arr.length; i++){
 				res += arr[i].intitule + " à " + arr[i].hdebut + " en salle " + arr[i].lieu + ", ";
 			}
 			response.output.text[0] = res;
+		}else{
+			response.output.text[0] = "Vous n'avez aucun cour";
 		}
 	}
 
@@ -211,8 +214,8 @@ function traiterCoursMaintenant(response){
 
 
 
-function traiterGetProfMaintenant(reponse){
-	const intent = reponse.intents[0].intent;
+function traiterGetProfMaintenant(response){
+	const intent = response.intents[0].intent;
 	console.log("intent : " + intent);
 	if (intent === 'prof_cours_maintenant'){
 		var arr = ade.getProf(ade.getSysDate, ade.getSysHeure);
@@ -222,11 +225,13 @@ function traiterGetProfMaintenant(reponse){
 				res += arr[i] + ", ";
 			}
 			response.output.text[0] = res;
+		}else{
+			response.output.text[0] = "Vous n'avez aucun cour";
 		}
 		
 	}
 	
-	return reponse;
+	return response;
 	
 }
 
@@ -235,12 +240,12 @@ function traiterGetProfMaintenant(reponse){
 function traiterCoursDate(response){
 	const intent = response.intents[0].intent;
 	console.log("intent : " + intent);
-	if (intent === 'cours_date'){
+	if (intent === 'cours_date' && response.context.context_formation != undefined){
 		const date = new Date(response.entities[0].value);
 		const dateF = date.getDate()+"/"+ade.convertMonth(date.getMonth()+1)+"/"+date.getFullYear();
 		console.log("date : " + date);
 		console.log("dateF : " + dateF);
-		var arr = ade.edtJour("Master Informatique", dateF);
+		var arr = ade.edtJour(response.context.context_formation, dateF);
 		console.log('array : ' + arr);
 		if(arr.length > 0){
 			var res = "Vous aurez cours de ";
@@ -248,6 +253,8 @@ function traiterCoursDate(response){
 				res += arr[i].intitule + " à " + arr[i].hdebut + " en " + arr[i].lieu + ", ";
 			}
 			response.output.text[0] = res;
+		}else{
+			response.output.text[0] = "Vous n'avez aucun cour";
 		}
 	}
 

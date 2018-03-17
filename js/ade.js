@@ -20,7 +20,7 @@ module.exports = {
     getSysDate : function() {
         d = new Date();
         jj = d.getDate();
-        mm = d.getMonth() + 1;
+        mm = this.convertMonth(d.getMonth() + 1);
         yy = d.getFullYear();//.toString().substr(-2);
         return jj + "/" + mm + "/" + yy;
     },
@@ -128,6 +128,7 @@ module.exports = {
             }
             
         });
+        return arr;
     },
     
     coursADate : function(date, heure){ // matière à telle date et telle heure
