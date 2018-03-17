@@ -138,9 +138,9 @@ function matiereActu() { // matière actuelle sinon rien
 }
 
 
-function coursImportant(date, heure){ //marche moyen bien
+function coursImportant(date, heure){ 
 	parsed.data.forEach(function (element) {
-		if(element[1] == date && element[3] == heure){
+		if(element[1] == date && element[3] == heure && element[0]  == formation){
 			if( (formation == "Master Informatique" && element[6] == "DROUET Jean-Michel") || 
 			(formation == " TELECOM 1A" && element[6] == "VRIGNAUD Katharina")){
 				console.log("Le cours du " + date + " à " + heure + " n'est pas important, tu n'es pas obligé d'y aller");
