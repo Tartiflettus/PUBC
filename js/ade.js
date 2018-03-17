@@ -117,21 +117,21 @@ module.exports = {
 		return arr;
     },
     
-    getProf : function(date, heure) {
+    prochainProf : function(formation, prof) {
         var arr = new Array;
-         parsed.data.forEach(function (element) {
-            if (element[1] == date && element[0] == formation && element[3] == heure) {
-                if (element[6] == "SIMON Gilles"){
-                    console.log("Gillou");
-                    arr.push("Gillou");
-                } else {
-                    console.log(element[6]+"");
-                    arr.push(element[6]);
+        parsed.data.sort(this.sortDate);
+        parsed.data.some(function (element) {
+            if(element[0]==formation && element[1]>= module.exports.getSysDate() && element[6].indexOf(prof) != -1 ){
+				//console.log(element[3] + " " + element[4] + " " + element[5]);
+					arr.push({
+                    "intitule" : element[4],
+                    "hdebut" : element[3],
+                    "lieu" : element[5]
+                });
+						return true;
                 }
-            }
-            
         });
-        return arr;
+		return arr;
     },
     
     coursADate : function(date, heure){ // matière à telle date et telle heure
@@ -184,8 +184,9 @@ module.exports = {
 
 
 var cours = "TD G1 Genie logiciel";
-var formation = "M1 MIAGE";
-var tab = module.exports.edtGroupe(formation, "G1", "20/03/2018");
+var formation = "Master Informatique";
+//var tab = module.exports.edtGroupe(formation, "G1", "20/03/2018");
+var tab = module.exports.prochainProf(formation, "SIMON");
 console.log(tab);
 //edtJour(formation, date);
 //console.log(getSysHeure());
