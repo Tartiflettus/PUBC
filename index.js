@@ -128,6 +128,7 @@ function sendResponse(response, resolve) {
 		//response = traiterGetProfMaintenant(response);
 		response = traiterCoursDate(response);
 		response = prochainCours(response);
+		response = prochainExamen(response);
 
 		response.context.action = null;
 		console.log(response);
@@ -253,6 +254,20 @@ function prochainCours(response){
 	return response;
 }
 
+
+function prochainExamen(response){
+	if(response.context.action === 'prochain_examen' && response.context.context_formation != undefined){
+		var res = ade.prochainExamen(response.context.context_formation);
+		console.log(res);
+		if(res != null && res != undefined){
+			response.output.text[0] = "Votre prochain examen sera à " + res.hdebut + " en " + res.lieu + ". " + res.intitule + " avec " + res.enseignant;
+		}else{
+			response.output.text[0] = "Vous n'avez pas d'examen prévu";
+		}
+	}
+
+	return response;
+}
 
 
 function traiterCoursDate(response){
