@@ -39,6 +39,16 @@ module.exports = {
             return (a[3] < b[3]) ? -1 : 1;
         }
     },
+
+    sortDate : function(a, b) {
+        const da = new Date(a[1]);
+        const db = new Date(b[1]);
+        if (da === db) {
+            return 0;
+        } else {
+            return (da < db) ? -1 : 1;
+        }
+    },
     
     edtJour : function(formation, date) { // 
         var arr = new Array;
@@ -76,7 +86,11 @@ module.exports = {
         parsed.data.forEach(function (element) {
             if (element[1] >= getSysDate() && element[0] == formation && element[4].indexOf("Examen") != -1) {
                 console.log(element[3] + " " + element[4] + " " + element[5]);
-    
+                return {
+                    "intitule" : element[4],
+                    "hdebut" : element[3],
+                    "lieu" : element[5]
+                };
             }
         });
     },
@@ -193,3 +207,4 @@ module.exports = {
 
 //changerFormation("M1 Info");
 //getProf("19/03/2018",  "10:15");
+
