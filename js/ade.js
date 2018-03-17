@@ -167,10 +167,6 @@ module.exports = {
 
 
 
-
-
-
-
 //edtJour(formation, date);
 //console.log(getSysHeure());
 //getGroupe(groupe);

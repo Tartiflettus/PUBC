@@ -208,6 +208,28 @@ function traiterCoursMaintenant(response){
 }
 
 
+
+function traiterGetProfMaintenant(reponse){
+	const intent = reponse.intents[0].intent;
+	if (intent == 'prof_cours_maintenant'){
+		var arr = ade.getProf(ade.getSysDate, ade.getSysHeure);
+	}
+	response.output.text[0] = "Actuellement tu as cours avec " + ade.getProf(date, heure));
+	
+	return reponse;
+	
+}
+
+
+fonction traiterGetProf(reponse){
+	
+	
+	
+	
+}
+
+
+
 // start the server
 app.listen(port);
 console.log('Server started! At http://localhost:' + port);
