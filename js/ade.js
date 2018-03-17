@@ -100,21 +100,21 @@ module.exports = {
         return arr;
     },
     
-    prochainCours : function(formation, cours) { // prochaine matière
-		var arr = new Array;
-        parsed.data.sort(this.sortDate);
+    prochainCours : function(formation) { // prochaine matière
+        var res = null;
+        parsed.data.sort(this.sortDuree);
         parsed.data.some(function (element) {
-            if(element[0]==formation && element[1]>= module.exports.getSysDate() && element[4].indexOf(cours) != -1 ){
-				//console.log(element[3] + " " + element[4] + " " + element[5]);
-					arr.push({
-                    "intitule" : element[4],
+            if(element[0]==formation && element[1] == module.exports.getSysDate() && element[3] >= module.exports.getSysHeure()){
+				console.log(element[3] + " " + element[4] + " " + element[5]);
+                    res = {"intitule" : element[4],
                     "hdebut" : element[3],
-                    "lieu" : element[5]
-                });
-						return true;
+                    "date" : element[1],
+                    "lieu" : element[5],
+                    "enseignant" : String(element[6]).toLowerCase()}
+					return true;
                 }
         });
-		return arr;
+		return res;
     },
     
     prochainProf : function(formation, prof) {
@@ -133,6 +133,9 @@ module.exports = {
         });
 		return arr;
     },
+
+
+
     
     coursADate : function(date, heure){ // matière à telle date et telle heure
         cours=null;
@@ -183,11 +186,11 @@ module.exports = {
 
 
 
-var cours = "TD G1 Genie logiciel";
+////var cours = "TD G1 Genie logiciel";
 var formation = "Master Informatique";
 //var tab = module.exports.edtGroupe(formation, "G1", "20/03/2018");
 var tab = module.exports.prochainProf(formation, "SIMON");
-console.log(tab);
+//console.log(tab);
 //edtJour(formation, date);
 //console.log(getSysHeure());
 //getGroupe(groupe);
@@ -198,4 +201,7 @@ console.log(tab);
 
 //changerFormation("M1 Info");
 //getProf("19/03/2018",  "10:15");
+
+var res = module.exports.prochainCours(formation);
+console.log(res);
 

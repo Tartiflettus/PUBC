@@ -125,8 +125,9 @@ function getSessionContext(sessionId) {
 function sendResponse(response, resolve) {
 
 		//response = traiterCoursMaintenant(response);
-		response = traiterGetProfMaintenant(response);
+		//response = traiterGetProfMaintenant(response);
 		response = traiterCoursDate(response);
+		response = prochainCours(response);
 
 		response.context.action = null;
 		console.log(response);
@@ -235,6 +236,21 @@ function traiterGetProfMaintenant(response){
 	
 	return response;
 	
+}
+
+
+function prochainCours(response){
+	if(response.context.action === 'prochain_prof' && response.context.context_formation != undefined){
+		var res = ade.prochainCours(response.context.context_formation);
+		console.log(res);
+		if(res != null && res != undefined){
+			response.output.text[0] = "Votre prochain cours sera à " + res.hdebut + " en " + res.lieu + ". " + res.intitule + " avec " + res.enseignant;
+		}else{
+			response.output.text[0] = "Vous n'avez pas de cours prévu";
+		}
+	}
+
+	return response;
 }
 
 
