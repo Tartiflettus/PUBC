@@ -97,20 +97,20 @@ module.exports = {
     
     prochainExamen : function(formation) { // prochaine matière
 		var res;
-        parsed.data.sort(this.sortDate);
+        parsed.data.sort(this.sortDuree);
         parsed.data.some(function (element) {
             if(element[0]==formation && element[1]>= module.exports.getSysDate() && element[4].indexOf("Examen") != -1 ){
 				//console.log(element[3] + " " + element[4] + " " + element[5]);
-					res = [
+					res = {
                     "intitule" : element[4],
 					"date" : element[1],
                     "hdebut" : element[3],
                     "lieu" : element[5]
-                ];
+					};
 						return true;
                 }
         });
-		return arr;
+		return res;
     },
     
     prochainProf : function(formation, prof) {
@@ -182,10 +182,10 @@ module.exports = {
 var cours = "TD G1 Genie logiciel";
 var formation = "Master Informatique";
 //var tab = module.exports.edtGroupe(formation, "G1", "20/03/2018");
-var tab = module.exports.prochainProf(formation, "SIMON");
+var tab = module.exports.prochainExamen(formation);
 console.log(tab);
 //edtJour(formation, date);
-//console.log(getSysHeure());
+//console.log(module.exports.getSysHeure());
 //getGroupe(groupe);
 //prochainCours();
 //coursADate("19/03/2018", "08:00");
