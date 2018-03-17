@@ -2,13 +2,6 @@ var Papa = require('./papaparse.min');
 var fs = require('fs');
 var csv = fs.readFileSync(__dirname + '/ADE-extract.csv', 'utf8');
 var parsed = Papa.parse(csv);
-var groupe = "G1";
-
-var date = "14/03/18";
-var formation = "Master Informatique";
-
-
-
 
 
 module.exports = {
@@ -107,25 +100,21 @@ module.exports = {
         });
     },
     
-    prochainCours : function() { // prochaine matière
-        dateMin = "35/35/35";
-        heureMin = "25:65";
-        cours = null;
-        
-        parsed.data.forEach(function (element) {
-            if(element[0]==formation && element[4].indexOf(groupe)!=-1 && element[1]>=getSysDate() && element[1]<=dateMin){
-                dateMin = element[1];
-                if(element[3]<heureMin){
-                    heureMin=element[3];
-                    cours=element[4];
+    prochainCours : function(formation, cours) { // prochaine matière
+		var arr = new Array;
+        parsed.data.sort(this.sortDate);
+        parsed.data.some(function (element) {
+            if(element[0]==formation && element[1]>= module.exports.getSysDate() && element[4].indexOf(cours) != -1 ){
+				//console.log(element[3] + " " + element[4] + " " + element[5]);
+					arr.push({
+                    "intitule" : element[4],
+                    "hdebut" : element[3],
+                    "lieu" : element[5]
+                });
+						return true;
                 }
-            }
         });
-        if(cours==null){
-            console.log("Pas de cours prévu...");
-        }else{
-            console.log(cours + " " + heureMin + " " + dateMin);
-        }
+		return arr;
     },
     
     getProf : function(date, heure) {
@@ -193,10 +182,11 @@ module.exports = {
 };
 
 
-
-
-
-
+/*
+var cours = "TD G1 Genie logiciel";
+var formation = "M1 MIAGE";
+var tab = module.exports.prochainCours(formation, cours);
+console.log(tab);*/
 //edtJour(formation, date);
 //console.log(getSysHeure());
 //getGroupe(groupe);
