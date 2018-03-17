@@ -100,17 +100,18 @@ module.exports = {
         return arr;
     },
     
-    prochainCours : function(formation, cours) { // prochaine matière
-		var arr = new Array;
+    prochainExamen : function(formation) { // prochaine matière
+		var res;
         parsed.data.sort(this.sortDate);
         parsed.data.some(function (element) {
-            if(element[0]==formation && element[1]>= module.exports.getSysDate() && element[4].indexOf(cours) != -1 ){
+            if(element[0]==formation && element[1]>= module.exports.getSysDate() && element[4].indexOf("Examen") != -1 ){
 				//console.log(element[3] + " " + element[4] + " " + element[5]);
-					arr.push({
+					res = [
                     "intitule" : element[4],
+					"date" : element[1],
                     "hdebut" : element[3],
                     "lieu" : element[5]
-                });
+                ];
 						return true;
                 }
         });
