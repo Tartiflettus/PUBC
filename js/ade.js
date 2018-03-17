@@ -82,16 +82,19 @@ module.exports = {
     
     edtGroupe : function(formation, groupe, date) { // emploi du temps du groupe
 	 var arr = new Array;
-	 var reg = new RegExp(groupe+"|(^(?!G\d).*$)");
+	var reg1 = new RegExp(groupe);
+	var reg2 = new RegExp("G[0-9]");
         parsed.data.sort(this.sortDuree);
         parsed.data.forEach(function (element) {
-            if (element[1] == date && element[0] == formation && element[4].match(reg)) {
+            if (element[1] == date && element[0] == formation) {
+				if(element[4].match(reg1) || !element[4].match(reg2)) {
                 console.log(element[3] + " " + element[4] + " " + element[5]);
                 arr.push({
                     "intitule" : element[4],
                     "hdebut" : element[3],
                     "lieu" : element[5]
                 });
+				}
             }
         });
         return arr;
@@ -180,10 +183,10 @@ module.exports = {
 
 
 
-/*var cours = "TD G1 Genie logiciel";
+var cours = "TD G1 Genie logiciel";
 var formation = "M1 MIAGE";
 var tab = module.exports.edtGroupe(formation, "G1", "20/03/2018");
-console.log(tab);*/
+console.log(tab);
 //edtJour(formation, date);
 //console.log(getSysHeure());
 //getGroupe(groupe);
